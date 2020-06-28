@@ -10,6 +10,8 @@
     const successMessages = ["Well done!", "Awesome job!", "You're killing it!", "Nice! Keep it up", "Nice!", "Great work. Next One!"]
     const failMessages = ["Oops! Next time..", "Auch. That went wrong.", "Good run. Better luck next time :)", "Ah well.. Good effort though"]
 
+    $("#buttons").hide()
+
     function startGame() {
         getNextPatternColor()
         startTimer()
@@ -95,6 +97,13 @@
         $("#message").text(failMessages[Math.floor(Math.random()*failMessages.length)])
     }
 
-    $("h1").on("click", startGame)
+    $("#start").on("click", function(){
+        $("#welcome").hide()
+        $("#buttons").show()
+        setTimeout(() => {
+            startGame()
+        }, 2000);
+        
+    })
 })()
 
