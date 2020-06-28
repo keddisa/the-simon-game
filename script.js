@@ -2,7 +2,7 @@
     let patternToGuess = []
     let guessedPattern = []
     let level = 1
-    let highestScore = 0
+    let highestScore = localStorage.getItem("simonHighScore") || 0
     let gameOver = false
     let timerInterval
 
@@ -92,12 +92,16 @@
             },
             duration:'fast'
         },'swing')
-        highestScore = level
+        if(localStorage.getItem("simonHighScore") < level-1) {
+            highestScore = level-1
+            localStorage.setItem("simonHighScore", highestScore)
+        }
+        
         $("#main-title").html("<strong>Game Over</strong>")
         $("#message").text(failMessages[Math.floor(Math.random()*failMessages.length)])
         $("#buttons").hide()
         $("#end").show()
-        $("#score").text(level)
+        $("#score").text(level-1)
         $("#highest-score").text(highestScore)
         level = 1
     }
@@ -113,6 +117,7 @@
     })
 
     $("#re-play").on("click", function(){
+        gameOver=false;
         $("#end").hide()
         $("#buttons").show()
         $("#main-title").html('<strong>Current Level: <span id="level-number">1</span></strong>')
