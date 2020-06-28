@@ -4,24 +4,29 @@
     let level = 1
     let highestScore = 0
     let gameOver = false
+    let timerInterval
 
     const values = ["green", "blue", "yellow", "red"]
     const successMessages = ["Well done!", "Awesome job!", "You're killing it!", "Nice! Keep it up", "Nice!", "Great work. Next One!"]
     const failMessages = ["Oops! Next time..", "Auch. That went wrong.", "Good run. Better luck next time :)", "Ah well.. Good effort though"]
 
     function startGame() {
-        // while(level<4) {
-            getNextPatternColor()
-            // let timerInterval = setInterval(function() {
-            //     let i = 5
-            //     $("#message").text("Play in: "+ i)
-            //     i= i-1
-            //     if(i === 0){
-            //         clearInterval(timerInterval)
-            //     }
-            // }, 1000)
-        // }
+        getNextPatternColor()
+        startTimer()
     }  
+
+    function startTimer () {
+        let i = 3
+        timerInterval = setInterval(function() {      
+            $("#message").text("Play in: "+ i)
+            console.log('interval')
+            if(i === 0){
+                clearInterval(timerInterval)
+                animateGameOver()
+            }
+            i--
+        }, 1000)
+    }
 
     function getNextPatternColor() {
         patternToGuess.push(values[Math.floor(Math.random()*values.length)])
@@ -32,6 +37,7 @@
 
     $(".color-button").click(function(){
         if(!gameOver) {
+            clearInterval(timerInterval)
             let colorClicked = $(this).attr("data-value")
             new Audio("sounds/" + colorClicked + ".mp3").play()
             $("#"+colorClicked).animate({  textIndent: 0 }, {
@@ -58,32 +64,36 @@
                     $("#message").text(successMessages[Math.floor(Math.random()*successMessages.length)])
                     setTimeout(() => {
                         getNextPatternColor()
+                        startTimer()
                     }, 1500);
                 }        
             } else {
-                gameOver = true
-                new Audio("sounds/wrong.mp3").play()
-                $("body").animate({  textIndent: 0 }, {
-                    step: function() {
-                      $(this).removeClass("bg-indigo-100")
-                      $(this).addClass("bg-red-500")
-                    },
-                    duration:'fast'
-                },'swing').animate({  textIndent: 0 }, {
-                    step: function() {
-                      $(this).removeClass("bg-red-500")
-                      $(this).addClass("bg-indigo-100")
-                    },
-                    duration:'fast'
-                },'swing')
-                highestScore = level
-                level = 1
-                $("#main-title").html("<strong>Game Over</strong>")
-                $("#message").text(failMessages[Math.floor(Math.random()*failMessages.length)])
-                
+                animateGameOver()              
             }
         }      
     })
+
+    function animateGameOver() {
+        gameOver = true
+        new Audio("sounds/wrong.mp3").play()
+        $("body").animate({  textIndent: 0 }, {
+            step: function() {
+              $(this).removeClass("bg-indigo-100")
+              $(this).addClass("bg-red-500")
+            },
+            duration:'fast'
+        },'swing').animate({  textIndent: 0 }, {
+            step: function() {
+              $(this).removeClass("bg-red-500")
+              $(this).addClass("bg-indigo-100")
+            },
+            duration:'fast'
+        },'swing')
+        highestScore = level
+        level = 1
+        $("#main-title").html("<strong>Game Over</strong>")
+        $("#message").text(failMessages[Math.floor(Math.random()*failMessages.length)])
+    }
 
     $("h1").on("click", startGame)
 })()
