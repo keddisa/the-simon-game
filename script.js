@@ -20,7 +20,6 @@
             //         clearInterval(timerInterval)
             //     }
             // }, 1000)
-            level++
         // }
     }  
 
@@ -53,6 +52,8 @@
                 guessedPattern.push(colorClicked)
                 console.log(guessedPattern)
                 if(guessedPattern.length === patternToGuess.length) {
+                    level++
+                    $("#level-number").text(level)
                     guessedPattern = []
                     $("#message").text(successMessages[Math.floor(Math.random()*successMessages.length)])
                     setTimeout(() => {
@@ -75,7 +76,11 @@
                     },
                     duration:'fast'
                 },'swing')
+                highestScore = level
+                level = 1
+                $("#main-title").html("<strong>Game Over</strong>")
                 $("#message").text(failMessages[Math.floor(Math.random()*failMessages.length)])
+                
             }
         }      
     })
