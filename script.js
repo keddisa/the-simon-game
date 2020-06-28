@@ -22,7 +22,6 @@
         let i = 3
         timerInterval = setInterval(function() {      
             $("#message").text("Play in: "+ i)
-            console.log('interval')
             if(i === 0){
                 clearInterval(timerInterval)
                 animateGameOver()
@@ -33,7 +32,6 @@
 
     function getNextPatternColor() {
         patternToGuess.push(values[Math.floor(Math.random()*values.length)])
-        console.log(patternToGuess)
         $("#" + patternToGuess[patternToGuess.length-1]).hide(50).show(50)
         new Audio("sounds/" + patternToGuess[patternToGuess.length-1] + ".mp3").play()
     }
@@ -59,7 +57,6 @@
     
             if(patternToGuess[guessedPattern.length] === colorClicked) {
                 guessedPattern.push(colorClicked)
-                console.log(guessedPattern)
                 if(guessedPattern.length === patternToGuess.length) {
                     level++
                     $("#level-number").text(level)
