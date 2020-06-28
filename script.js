@@ -8,9 +8,10 @@
 
     const values = ["green", "blue", "yellow", "red"]
     const successMessages = ["Well done!", "Awesome job!", "You're killing it!", "Nice! Keep it up", "Nice!", "Great work. Next One!"]
-    const failMessages = ["Oops! Next time..", "Auch. That went wrong.", "Good run. Better luck next time :)", "Ah well.. Good effort though"]
+    const failMessages = ["Oops! Next time..", "Auch!!", "Good run. Better luck next time :)", "Ah well.. Good effort though"]
 
     $("#buttons").hide()
+    $("#end").hide()
 
     function startGame() {
         getNextPatternColor()
@@ -92,14 +93,30 @@
             duration:'fast'
         },'swing')
         highestScore = level
-        level = 1
         $("#main-title").html("<strong>Game Over</strong>")
         $("#message").text(failMessages[Math.floor(Math.random()*failMessages.length)])
+        $("#buttons").hide()
+        $("#end").show()
+        $("#score").text(level)
+        $("#highest-score").text(highestScore)
+        level = 1
     }
 
     $("#start").on("click", function(){
         $("#welcome").hide()
         $("#buttons").show()
+        $("#main-title").html('<strong>Current Level: <span id="level-number">1</span></strong>')
+        setTimeout(() => {
+            startGame()
+        }, 2000);
+        
+    })
+
+    $("#re-play").on("click", function(){
+        $("#end").hide()
+        $("#buttons").show()
+        $("#main-title").html('<strong>Current Level: <span id="level-number">1</span></strong>')
+        $("#message").text("Let's go")
         setTimeout(() => {
             startGame()
         }, 2000);
